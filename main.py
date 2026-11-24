@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def save_expenses(expenses):
     with open("expenses.json","w") as file:
@@ -34,10 +35,20 @@ def add(expenses):
     if not description:
         print("Enter a description\n")
         return
+    while True:
+        try:
+            date=input("Date (YYYY-MM-DD): ")
+            datetime.strptime(date,"%Y-%m-%d")
+            break
+        except ValueError:
+            print("enter a valid date")
+            print()
+
     expense={}
     expense["category"]=category
     expense["amount"]=amount
     expense["description"]=description
+    expense["date"]=date
     expenses.append(expense)
     print()
     save_expenses(expenses)
@@ -52,6 +63,7 @@ def view(expenses):
         print(f"Category:{exp['category']}")
         print(f"Amount:{exp['amount']}")
         print(f"Description:{exp['description']}")
+        print(f"Date:{exp.get('date','not available')}")
         print()
 
 def calculate_total(expenses):
